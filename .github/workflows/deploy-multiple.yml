@@ -1,0 +1,23 @@
+name: Deploy Multiple Resources
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Resources
+      run: |
+        az deployment group create \
+          --resource-group rg-bicep-demo \
+          --template-file infra/main.bicep \
+          --parameters storageAccountName=stor${RANDOM} vnetName=vnet-demo

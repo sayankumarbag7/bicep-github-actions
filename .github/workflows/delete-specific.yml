@@ -1,0 +1,25 @@
+name: Delete Specific Resource
+
+on:
+  workflow_dispatch:
+    inputs:
+      resourceName:
+        description: 'Enter Resource Name'
+        required: true
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Delete Resource
+      run: |
+        az resource delete \
+          --name ${{ github.event.inputs.resourceName }} \
+          --resource-group rg-bicep-demo \
+          --resource-type Microsoft.Storage/storageAccounts
