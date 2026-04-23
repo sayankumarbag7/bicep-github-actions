@@ -2,6 +2,10 @@ name: Delete Single Resource
 
 on:
   workflow_dispatch:
+    inputs:
+      storageName:
+        description: 'Enter Storage Account Name'
+        required: true
 
 jobs:
   delete:
@@ -16,6 +20,6 @@ jobs:
     - name: Delete Storage Account
       run: |
         az storage account delete \
-          --name <PUT-STORAGE-NAME-HERE> \
+          --name ${{ github.event.inputs.storageName }} \
           --resource-group rg-bicep-demo \
           --yes
