@@ -15,9 +15,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Create Resource Group
+      run: |
+        az group create --name rg-bicep-demo --location eastus
+
     - name: Deploy Resources
       run: |
         az deployment group create \
           --resource-group rg-bicep-demo \
           --template-file infra/main.bicep \
-          --parameters storageAccountName=stor${RANDOM} vnetName=vnet-demo
+          --parameters storageAccountName=stor${{ github.run_id }} vnetName=vnet-demo
